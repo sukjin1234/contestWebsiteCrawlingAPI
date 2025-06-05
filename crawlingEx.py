@@ -34,28 +34,8 @@ def parse_allforyoung_contest_detail(detail_url):
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, 'html.parser')
         
-        # 대상, 문의 크롤링 해야함 ㅠㅠㅠ
-        
-        # 찾고자 하는 키워드 리스트
-        # targets = [
-        #     "지원자격", "지원 자격", "참가대상", "참가 대상",
-        #     "공모자격", "공모 자격", "응모자격", "응모 자격",
-        #     "참가자격", "참가 자격", "신청자격", "신청 자격",
-        #     "공모대상", "공모 대상"
-        # ]
-        
-        target = "미제공"
-        
-        # # div.prose를 부모로 두는 모든 p 태그 추출
-        # for p in soup.select('div.prose > p'):
-        #     txt = p.get_text(strip=True)
-        #     # 키워드가 들어 있는지 확인
-        #     if any(target in txt for target in targets):
-        #         target = txt
-        
-        # 실제 구조는 개발자도구로 class/id 확인해야 함
+        target = "미제공" 
         title = soup.select_one('h2').get_text(strip=True) if soup.select_one('h2') else "미제공"
-        # 주최측, 대상, 기간 등은 상세 페이지마다 구조 다름. 아래 예시는 예측값!
         host = soup.select_one('div.space-y-4 > h3.font-medium').get_text(strip=True) if soup.select_one('div.space-y-4 > h3.font-medium') else "미제공"
         period = soup.select_one('div.flex>p').get_text(strip=True) if soup.select_one('div.flex>p') else "미제공"
         contact = "미제공"
@@ -104,7 +84,7 @@ if __name__ == "__main__":
     data = get_allforyoung_contests()
     
      # 크롤링 결과를 data.txt로 저장
-    with open("data.txt", "w", encoding="utf-8") as f:
+    with open("data.json", "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
     
     for contest in data:
